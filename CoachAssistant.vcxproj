@@ -127,13 +127,29 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Autorization.h" />
+    <ClInclude Include="Calendar.h" />
     <ClInclude Include="CoachAssistant.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="Model.h" />
+    <ClInclude Include="Nouts.h" />
+    <ClInclude Include="Repo.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="Training.h" />
+    <ClInclude Include="TrainingM.h" />
+    <ClInclude Include="UserAuth.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Autorization.cpp" />
+    <ClCompile Include="Calendar.cpp" />
     <ClCompile Include="CoachAssistant.cpp" />
+    <ClCompile Include="Model.cpp" />
+    <ClCompile Include="Nouts.cpp" />
+    <ClCompile Include="Repo.cpp" />
+    <ClCompile Include="Training.cpp" />
+    <ClCompile Include="TrainingM.cpp" />
+    <ClCompile Include="UserAuth.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="CoachAssistant.rc" />
@@ -141,6 +157,10 @@
   <ItemGroup>
     <Image Include="CoachAssistant.ico" />
     <Image Include="small.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Tranings.txt" />
+    <Text Include="Userscode.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
