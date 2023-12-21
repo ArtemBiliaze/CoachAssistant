@@ -144,11 +144,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
     {
-    case WM_CREATE:
-    {
-        DialogBox(hInst, MAKEINTRESOURCE(IDD_DIALOG1), hWnd, MainMenu);
-    }
-    break;
+    
+    
     case WM_COMMAND:
         {
             int wmId = LOWORD(wParam);
