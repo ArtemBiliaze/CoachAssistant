@@ -8,8 +8,11 @@ class TrainingM : public Repo
 public:
 	TrainingM(std::string fileName);
 	std::vector<Training>& getTrainings();
-	void loadData() override;
-	void addTraining(const Training& training);
-	void redactionT(int index, TCHAR description[]);
+	void loadDataT() override;
+	void saveDataT() override;
+	void addTraining(Training& training);
+	void redactionT(int indexX, TCHAR description[]);
+	bool checkT(TCHAR description[]);
+	bool deleteT(int trainingId);
 };
 

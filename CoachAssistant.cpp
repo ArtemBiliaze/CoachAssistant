@@ -13,11 +13,13 @@ HWND hLogin, hPassword, hName, hSurname, hEmail, hLoginR, hPasswordR1, hPassword
 HWND hSubmit, hClear, hRegitresion;
 HWND hCalendar;
 HWND hTraningsList;
-HWND hExcept, hReduce, hTreningFuture, hTreningLast, hSave, hClearC;
+HWND hExcept, hReduce, hTreningAdd, hTreningDel, hSave, hClearC;
 
 //* Ключові глобальні змінні:
 bool isAutorize = false;
 int index;
+int indexX;
+TCHAR rechangeTraining[100];
 bool isCalendar = false;
 bool isUnique = true;
 auto userRepo = std::make_unique<Autorization>();
@@ -121,11 +123,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             }
             else {
                 TCHAR buff[100];
-                lstrcpy(buff, L"Користувач - ");
+                lstrcpy(buff, L"User - ");
                 lstrcat(buff, userRepo->getCopyFirstName());
                 lstrcat(buff, L"");
                 lstrcat(buff, userRepo->getCopyLastName());
-                lstrcat(buff, L"?");
+                lstrcat(buff, L"");
                 SetWindowText(hWnd, buff);
             }
             DialogBox(hInst, MAKEINTRESOURCE(IDD_DIALOG3), hWnd, Calendar);
@@ -317,8 +319,8 @@ INT_PTR CALLBACK Calendar(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
             hEditC = GetDlgItem(hDlg, IDC_EDIT9);
             hExcept = GetDlgItem(hDlg, IDC_BUTTON6);
             hReduce = GetDlgItem(hDlg, IDC_BUTTON10);
-            hTreningFuture = GetDlgItem(hDlg, IDC_BUTTON7);
-            hTreningLast = GetDlgItem(hDlg, IDC_BUTTON9);
+            hTreningAdd = GetDlgItem(hDlg, IDC_BUTTON7);
+            hTreningDel = GetDlgItem(hDlg, IDC_BUTTON9);
             hSave = GetDlgItem(hDlg, IDC_BUTTON11);
             hClearC = GetDlgItem(hDlg, IDC_BUTTON5);
         }
@@ -326,18 +328,31 @@ INT_PTR CALLBACK Calendar(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_COMMAND:
         {
             int wmId = LOWORD(wParam);
-            if (wmId == IDC_BUTTON11)
-            {
-                Training newT;
-                trainingsRepo->addTraining(newT);
-                if (!isUnique) {
-                    MessageBox(hDlg, L"Вибачте але це тренування збережене",
-                        L"Mistake", MB_OK | MB_ICONERROR);
+            if (wmId == IDC_BUTTON11) {
+                trainingsRepo->saveDataT();
+                MessageBox(hDlg, L"Все успішно збережено!!!",
+                    L"Message", MB_OK | MB_ICONINFORMATION);
+            }
+            if (wmId == IDC_BUTTON9) {
+                TCHAR buff[100];
+                GetWindowText(hEditC, buff, 100);
+                if (lstrlen(buff) == 0) {
+                    MessageBox(hDlg, L"Ви не показали яке тренування хочете",
+                        L"Warning", MB_OK | MB_ICONWARNING);
+                    SetFocus(hEditC);
+                }
+                if (trainingsRepo->checkT(rechangeTraining)) {
+                    MessageBox(hDlg, L"Вибачте це тренування додано!!!",
+                        L"Warning", MB_OK | MB_ICONWARNING);
                 }
                 else {
-                    MessageBox(hDlg, L"Все тренування на цей день є!",
-                        L"Messege", MB_OK | MB_ICONERROR);
-                    EndDialog(hDlg, wmId);
+                    
+                    std::vector<Training> allTrainings = trainingsRepo->getTrainings();
+                    int id = allTrainings.back().getId() + 1;
+                    Training newTrain(id, buff);
+                    trainingsRepo->addTraining(newTrain);
+                    SendMessage(hEditC, LB_ADDSTRING, 0, LPARAM(buff));
+                    trainingsRepo->saveDataT();
                 }
             }
             else (LOWORD(wParam) == IDC_BUTTON10); {
@@ -350,17 +365,45 @@ INT_PTR CALLBACK Calendar(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
                       SetFocus(hEditC);
                   }
                   else {
-                      trainingsRepo->redactionT(index, buff);
-                      SendMessage(hTraningsList, LB_SETITEMDATA, index, LPARAM(buff));
-                      trainingsRepo->saveData();
+                      trainingsRepo->redactionT(indexX, buff);
+                      SendMessage(hTraningsList, LB_SETITEMDATA, indexX, LPARAM(buff));
+                      trainingsRepo->saveDataT();
                       MessageBox(hDlg, L"Процес редагування зроблено", L"Message", MB_OK | MB_ICONINFORMATION);
                   }
             }
-            if (HIWORD(wParam) == LBN_SELCHANGE) {
-                int selectedIndex = SendMessage(GetDlgItem(hDlg, IDC_LIST2), LB_GETCURSEL, 0, 0);
-                if (selectedIndex != LB_ERR) {
-                    EnableWindow(hReduce, TRUE);
+            if (wmId == IDC_BUTTON7)
+            {
+                TCHAR buff[100];
+                GetWindowText(hEditC, buff, 100);
+                if (lstrlen(buff) == 0) {
+                    MessageBox(hDlg, L"Виберіть те тренування яке ви хочете видалити!!!",
+                        L"Warning", MB_OK | MB_ICONWARNING);
+                    SetFocus(hEditC);
                 }
+                else {
+                    int trainingId = _wtoi(buff);
+                    bool DelT = trainingsRepo->deleteT(trainingId);
+                    if (DelT) {
+                        MessageBox(hDlg, L">Тренування успішно видалено<",
+                            L"Message", MB_OK | MB_ICONINFORMATION);
+                    }
+                    else {
+                        MessageBox(hDlg, L"Тренування не знайдено!!!",
+                            L"Mistake", MB_OK | MB_ICONERROR);
+                    }
+                }
+                break;
+            }
+            if (wmId == IDC_BUTTON5) {
+                SetWindowText(hEditC, L"");
+                SetWindowText(hTraningsList, L"");
+                SetFocus(hEditC);
+                SetFocus(hTraningsList);
+            }
+            else if (LOWORD(wParam) == IDC_LIST2 && HIWORD(wParam) == LBN_SELCHANGE) {
+                SendMessage(hTraningsList, LB_GETCURSEL, 0, 0);
+                lstrcpy(rechangeTraining, trainingsRepo->getTrainings()[index].getDescription());
+                SetWindowText(hEditC, rechangeTraining);
             }
             if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
             {
@@ -391,17 +434,3 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
     }
     return (INT_PTR)FALSE;
 }
-// lpChange = (LPNMDATETIMECHANGE) lParam;
-//if (LOWORD(wParam) == IDC_DATETIMEPICKER1 && HIWORD(wParam) == DTN_DATETIMECHANGE) {
-    //SYSTEMTIME chooseData;
-    //TCHAR buff[100];
-    //std::vector<Training> trainings = trainingsRepo->findTrainingsByDate(chooseData, trainings);
-    //SendMessage(GetDlgItem(hDlg, IDC_LIST2), LB_RESETCONTENT, 0, 0);
-    //for (const auto& training : trainings) {
-        //SendMessage(GetDlgItem(hDlg, IDC_LIST2), LB_ADDSTRING, 0, LPARAM(buff));
-    //}
-//}
-
- //if (lpnmhdr->idFrom == IDC_DATETIMEPICKER1 && lpnmhdr->code == DTN_DATETIMECHANGE)
-//{
-    //LPNMDATETIMECHANGE lpChange = (LPNMDATETIMECHANGE)lParam;
