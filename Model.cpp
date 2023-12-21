@@ -6,7 +6,7 @@ Model::Model()
 	lstrcpy(this->description, L"");
 }
 
-Model::Model(int id, int date, TCHAR description[100])
+Model::Model(int id, TCHAR description[100])
 {
 	lstrcpy(this->description, description);
 }
@@ -14,11 +14,6 @@ Model::Model(int id, int date, TCHAR description[100])
 int Model::getId()
 {
 	return id;
-}
-
-int Model::getDate()
-{
-	return date;
 }
 
 TCHAR* Model::getDescription()

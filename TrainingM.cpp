@@ -10,10 +10,9 @@ std::vector<Training>& TrainingM::getTrainings()
 	return trainings;
 }
 
-void TrainingM::loadData()
+void TrainingM::loadDataT()
 {
 	int id;
-	int date;
 	TCHAR descriptions[100];
 	char buff[100];
 	// ->
@@ -29,29 +28,53 @@ void TrainingM::loadData()
 			fin.getline(buff, 100);
 			mbstowcs_s(NULL, descriptions, 100, buff, 100);
 			// ->
-			Training training(id, date, descriptions);
+			Training training(id, descriptions);
 			trainings.push_back(training);
 		}
 	}
 	fin.close();
 }
 
-void TrainingM::addTraining(const Training& training)
+void TrainingM::saveDataT()
 {
-	bool isUnique = true;
-	for (const auto& exTraining : trainings) {
-		if (exTraining.id == training.id);
-		isUnique = false;
-		break;
+	std::ofstream fout;
+	fout.open("Tranings.txt");
+	for (int i = 0; i < trainings.size(); i++) {
+		Training training = trainings[i];
+		fout << trainings[i].getId() << std::endl;
+		fout << trainings[i].getDescription() << std::endl;
 	}
-	if (isUnique) {
-		trainings.push_back(training);
-	}
+	fout.close();
 }
 
-void TrainingM::redactionT(int index, TCHAR description[])
+void TrainingM::addTraining(Training& training)
 {
-	trainings[index].setDes(description);
+	trainings.push_back(training);
 }
 
+void TrainingM::redactionT(int indexX, TCHAR description[])
+{
+	trainings[indexX].setDes(description);
+}
 
+bool TrainingM::checkT(TCHAR description[])
+{
+	auto iterator = std::find_if(trainings.begin(), trainings.end(),
+		[description](Training& training) {
+			return (lstrcmp(description, training.getDescription()) == 0);
+		});
+	return (iterator != trainings.end());
+}
+
+bool TrainingM::deleteT(int trainingId)
+{
+	auto iter = std::find_if(trainings.begin(), trainings.end(), [trainingId](Training& training) {
+		return training.getId() == trainingId;
+		});
+	// ->
+	if (iter != trainings.end()) {
+		trainings.erase(iter);
+		return true; 
+	}
+	return false;
+}

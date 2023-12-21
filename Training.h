@@ -5,6 +5,5 @@ class Training : public Model
 {
 public:
 	Training();
-	Training(int id, int date,TCHAR description[100]);
-	int id;
+	Training(int id, TCHAR description[100]);
 };

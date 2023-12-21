@@ -6,7 +6,7 @@ protected:
 	std::string fileName;
 public:
 	Repo(std::string fileName);
-	virtual void loadData() = 0;
-	virtual void saveData() = 0;
+	virtual void loadDataT() = 0;
+	virtual void saveDataT() = 0;
 };
 
