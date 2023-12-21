@@ -128,12 +128,20 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CoachAssistant.h" />
+    <ClInclude Include="Exercise.h" />
+    <ClInclude Include="ExerciseRepo.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="Notes.h" />
+    <ClInclude Include="NotesRepo.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CoachAssistant.cpp" />
+    <ClCompile Include="Exercise.cpp" />
+    <ClCompile Include="ExerciseRepo.cpp" />
+    <ClCompile Include="Notes.cpp" />
+    <ClCompile Include="NotesRepo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="CoachAssistant.rc" />
@@ -141,6 +149,15 @@
   <ItemGroup>
     <Image Include="CoachAssistant.ico" />
     <Image Include="small.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="BenchProgram.txt" />
+    <Text Include="BenchProtocol.txt" />
+    <Text Include="DeadLiftProgram.txt" />
+    <Text Include="DeadLiftProtocol.txt" />
+    <Text Include="Notes.txt" />
+    <Text Include="SquatProgram.txt" />
+    <Text Include="SquatProtocol.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

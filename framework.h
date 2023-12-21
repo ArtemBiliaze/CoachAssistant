@@ -13,3 +13,11 @@
 #include <malloc.h>
 #include <memory.h>
 #include <tchar.h>
+
+//my includes
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <fstream>
+#include <CommCtrl.h>
+#pragma comment(lib, "comctl32.lib")

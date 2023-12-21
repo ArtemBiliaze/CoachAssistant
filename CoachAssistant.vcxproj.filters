@@ -27,9 +27,33 @@
     <ClInclude Include="CoachAssistant.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="Exercise.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="ExerciseRepo.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Notes.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="NotesRepo.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CoachAssistant.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Exercise.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="ExerciseRepo.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Notes.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="NotesRepo.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
@@ -45,5 +69,14 @@
     <Image Include="CoachAssistant.ico">
       <Filter>Файлы ресурсов</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="BenchProtocol.txt" />
+    <Text Include="BenchProgram.txt" />
+    <Text Include="Notes.txt" />
+    <Text Include="SquatProtocol.txt" />
+    <Text Include="SquatProgram.txt" />
+    <Text Include="DeadLiftProtocol.txt" />
+    <Text Include="DeadLiftProgram.txt" />
   </ItemGroup>
 </Project>
